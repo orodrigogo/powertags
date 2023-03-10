@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -7,10 +8,13 @@ import { Button } from "../../components/Button";
 import { TextArea } from "../../components/TextArea";
 
 import { styles } from "./styles";
-import { useState } from "react";
 
 export function Details() {
   const [description, setDescription] = useState('');
+
+  function handleGenerateNewTags() {
+
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -23,9 +27,13 @@ export function Details() {
             onChangeText={setDescription}
             value={description}
             onClear={() => setDescription('')}
+            autoFocus={true}
           />
 
-          <Button title="Gerar novas tags" />
+          <Button
+            title="Gerar novas tags"
+            onPress={handleGenerateNewTags}
+          />
         </View>
 
         <Tags />
