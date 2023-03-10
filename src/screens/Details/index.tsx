@@ -9,7 +9,7 @@ import { TextArea } from "../../components/TextArea";
 
 import { styles } from "./styles";
 
-const API_KEY = "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";
+const { CHAT_GPD_API_KEY } = process.env;
 
 export function Details() {
   const [tags, setTags] = useState<string[]>([]);
@@ -19,7 +19,7 @@ export function Details() {
   function handleFetchTags() {
     setIsLoading(true);
     const prompt = `
-      Gerar palavras chave para um post sobre ${description.trim()}.       
+      Gerar palavras chaves únicas em inglês e português para um post sobre ${description.trim()}.       
       Substituir os espaços de cada palavra pelo caractere "_".
       Retornar cada item separado por vírgula, em minúsculo e sem quebra de linha.
     `;
@@ -28,7 +28,7 @@ export function Details() {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${API_KEY}`
+        Authorization: `Bearer ${CHAT_GPD_API_KEY}`
       },
       body: JSON.stringify({
         prompt,
