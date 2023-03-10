@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import { useFonts, NotoSans_400Regular, NotoSans_700Bold } from '@expo-google-fonts/noto-sans';
 
 import { Loading } from './src/components/Loading';
@@ -7,7 +6,7 @@ import { Loading } from './src/components/Loading';
 export default function App() {
   const [fontsLoaded] = useFonts({ NotoSans_400Regular, NotoSans_700Bold });
 
-  if (fontsLoaded) {
+  if (!fontsLoaded) {
     return (
       <Loading />
     );
@@ -15,8 +14,13 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
+
       <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
     </View>
   );
 }
@@ -24,7 +28,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
     alignItems: 'center',
     justifyContent: 'center',
   },
