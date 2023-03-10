@@ -1,41 +1,25 @@
-import { Text } from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import { HoldItem } from 'react-native-hold-menu';
+import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import Animated, { FadeIn, FadeOut, Layout } from 'react-native-reanimated';
+
+const TouchableOpacityAnimated = Animated.createAnimatedComponent(TouchableOpacity);
 
 import { styles } from './styles';
 
-type Props = {
+type Props = TouchableOpacityProps & {
   title: string;
 }
-export function Tag({ title }: Props) {
+export function Tag({ title, ...rest }: Props) {
   return (
-    <Animated.View
+    <TouchableOpacityAnimated
       style={styles.container}
       entering={FadeIn}
       exiting={FadeOut}
       layout={Layout}
+      {...rest}
     >
-      <HoldItem
-        items={
-          [
-            {
-              text: title,
-              isTitle: true
-            },
-            {
-              text: 'Apagar tag',
-              isDestructive: true,
-              onPress: () => { },
-              icon: 'trash'
-            },
-          ]
-        }
-      >
-        <Text style={styles.title}>
-          {title}
-        </Text>
-      </HoldItem>
-    </Animated.View>
+      <Text style={styles.title}>
+        {title}
+      </Text>
+    </TouchableOpacityAnimated>
   );
 }

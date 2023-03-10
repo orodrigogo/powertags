@@ -27,8 +27,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
 
     position: 'absolute',
-    top: -10,
-    right: -10,
+    top: 10,
+    right: 10,
 
     backgroundColor: THEME.COLORS.GRAY_400,
   },

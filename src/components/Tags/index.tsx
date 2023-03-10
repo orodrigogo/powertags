@@ -1,4 +1,5 @@
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
+import Animated, { Layout } from 'react-native-reanimated';
 import * as Clipboard from 'expo-clipboard';
 
 import { ButtonIcon } from '../ButtonIcon';
@@ -8,14 +9,35 @@ import { styles } from './styles';
 
 type Props = {
   tags: string[];
+  setTags: (tags: React.SetStateAction<string[]>) => void;
 }
 
-export function Tags({ tags }: Props) {
+export function Tags({ tags, setTags }: Props) {
 
-  async function handleCopyToClipboard() {
+  function handleCopyToClipboard() {
     const tagsFormatted = tags.toString().replaceAll(",", " ");
 
-    await Clipboard.setStringAsync(tagsFormatted);
+    Clipboard
+      .setStringAsync(tagsFormatted)
+      .then(() => Alert.alert('Copiado!'))
+      .catch(() => Alert.alert('Não foi possível copiar!'));
+  }
+
+  function handleRemove(tag: string) {
+    Alert.alert(
+      'Remover Tag',
+      `Remover a tag "${tag}"?`,
+      [
+        {
+          text: 'Não',
+          style: 'cancel'
+        },
+        {
+          text: 'Sim',
+          onPress: () => setTags((prevState) => prevState.filter((item) => item !== tag))
+        }
+      ]
+    );
   }
 
   return (
@@ -31,16 +53,20 @@ export function Tags({ tags }: Props) {
         />
       </View>
 
-      <View style={styles.content}>
+      <Animated.View
+        style={styles.content}
+        layout={Layout}
+      >
         {
-          tags.map((title) => (
+          tags.map((tag) => (
             <Tag
-              key={title}
-              title={title}
+              key={tag}
+              title={tag}
+              onPress={() => handleRemove(tag)}
             />
           ))
         }
-      </View>
+      </Animated.View>
     </View>
   );
 }

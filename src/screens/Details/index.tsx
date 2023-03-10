@@ -19,9 +19,9 @@ export function Details() {
   function handleFetchTags() {
     setIsLoading(true);
     const prompt = `
-      Gerar palavras chaves para um post sobre ${description.trim()}.       
-      Substituir os espaços de cada palavra pelo caractere "_".
-      Retornar cada item separado por vírgula, em minúsculo e sem quebra de linha.
+      Generate keywords in Portuguese for a post about ${description.trim()}.       
+      Replace the spaces in each word with the character "_".
+      Return each item separated by a comma, in lowercase, and without a line break.
     `;
 
     fetch("https://api.openai.com/v1/engines/text-davinci-003-playground/completions", {
@@ -76,7 +76,10 @@ export function Details() {
           />
         </View>
 
-        <Tags tags={tags} />
+        <Tags
+          tags={tags}
+          setTags={setTags}
+        />
       </ScrollView>
     </SafeAreaView>
   );
