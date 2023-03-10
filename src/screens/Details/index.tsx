@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Tags } from "../../components/Tags";
@@ -16,18 +16,20 @@ export function Details() {
     <SafeAreaView style={styles.container}>
       <Header title="React Native" />
 
-      <View style={styles.content}>
-        <TextArea
-          placeholder="Sobre qual assunto você deseja gerar tags?"
-          onChangeText={setDescription}
-          value={description}
-          onClear={() => setDescription('')}
-        />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.content}>
+          <TextArea
+            placeholder="Sobre qual assunto você deseja gerar tags?"
+            onChangeText={setDescription}
+            value={description}
+            onClear={() => setDescription('')}
+          />
 
-        <Button title="Gerar novas tags" />
-      </View>
+          <Button title="Gerar novas tags" />
+        </View>
 
-      <Tags />
+        <Tags />
+      </ScrollView>
     </SafeAreaView>
   );
 }
