@@ -31,5 +31,8 @@ export const styles = StyleSheet.create({
     right: -10,
 
     backgroundColor: THEME.COLORS.GRAY_400,
+  },
+  disabled: {
+    opacity: 0.5
   }
 });

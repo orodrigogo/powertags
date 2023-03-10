@@ -46,7 +46,12 @@ export function Details() {
   }
 
   function saveTags(data: string) {
-    setTags(data.trim().split(','));
+    const tagsFormatted = data
+      .trim()
+      .split(',')
+      .map((tag) => `#${tag}`);
+
+    setTags(tagsFormatted);
   }
 
   return (
@@ -61,6 +66,7 @@ export function Details() {
             value={description}
             onClear={() => setDescription("")}
             autoFocus={true}
+            editable={!isLoading}
           />
 
           <Button
