@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
 
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
 
     backgroundColor: THEME.COLORS.GRAY_500
   },
@@ -17,7 +18,6 @@ export const styles = StyleSheet.create({
     fontSize: THEME.FONTS.SIZE.LG,
     color: THEME.COLORS.GRAY_200,
 
-    flex: 1,
     textAlign: "center",
     paddingHorizontal: 16
   }

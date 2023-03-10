@@ -1,9 +1,10 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
+import { PopupMenu } from "../PopupMenu";
+
 import { styles } from "./styles";
 import { THEME } from "../../theme";
-import { ButtonIcon } from "../ButtonIcon";
 
 type Props = {
   title: string;
@@ -27,9 +28,7 @@ export function Header({ title }: Props) {
         {title}
       </Text>
 
-      <ButtonIcon
-        iconName="more-vert"
-      />
+      <PopupMenu />
     </View>
   );
 }
