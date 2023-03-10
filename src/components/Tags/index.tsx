@@ -10,8 +10,6 @@ type Props = {
 }
 
 export function Tags({ tags }: Props) {
-  console.log(tags);
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
