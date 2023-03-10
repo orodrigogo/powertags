@@ -16,5 +16,8 @@ export const styles = StyleSheet.create({
     color: THEME.COLORS.GRAY_200,
     fontFamily: THEME.FONTS.FAMILY.PRIMARY.BOLD,
     fontSize: THEME.FONTS.SIZE.MD,
+  },
+  disabled: {
+    opacity: 0.5
   }
 });

@@ -5,12 +5,18 @@ import { Tag } from '../Tag';
 
 import { styles } from './styles';
 
-export function Tags() {
+type Props = {
+  tags: string[];
+}
+
+export function Tags({ tags }: Props) {
+  console.log(tags);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>
-          1 tags
+          {tags.length} tags
         </Text>
 
         <ButtonIcon
@@ -19,11 +25,14 @@ export function Tags() {
       </View>
 
       <View style={styles.content}>
-        <Tag title="mobile" />
-        <Tag title="mobile" />
-        <Tag title="mobile" />
-        <Tag title="mobile" />
-        <Tag title="mobile" />
+        {
+          tags.map((title) => (
+            <Tag
+              key={title}
+              title={title}
+            />
+          ))
+        }
       </View>
     </View>
   );
