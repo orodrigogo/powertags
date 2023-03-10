@@ -19,7 +19,7 @@ export function Details() {
   function handleFetchTags() {
     setIsLoading(true);
     const prompt = `
-      Gerar palavras chaves únicas em inglês e português para um post sobre ${description.trim()}.       
+      Gerar palavras chaves para um post sobre ${description.trim()}.       
       Substituir os espaços de cada palavra pelo caractere "_".
       Retornar cada item separado por vírgula, em minúsculo e sem quebra de linha.
     `;
@@ -56,7 +56,7 @@ export function Details() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="React Native" />
+      <Header title="Tags" />
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
@@ -70,7 +70,7 @@ export function Details() {
           />
 
           <Button
-            title="Gerar novas tags"
+            title="Gerar tags"
             onPress={handleFetchTags}
             isLoading={isLoading}
           />

@@ -28,7 +28,7 @@ export function Header({ title }: Props) {
       </Text>
 
       <ButtonIcon
-        iconName="edit"
+        iconName="more-vert"
       />
     </View>
   );
