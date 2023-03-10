@@ -6,9 +6,10 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: THEME.COLORS.GRAY_600,
-
   },
   content: {
-    padding: 32
+    padding: 32,
+    gap: 16,
+    marginBottom: 32
   }
 });

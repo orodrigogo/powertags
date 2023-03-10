@@ -14,11 +14,11 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontFamily: THEME.FONTS.FAMILY.PRIMARY.BOLD,
-    fontSize: THEME.FONTS.SIZE.MD,
+    fontSize: THEME.FONTS.SIZE.LG,
     color: THEME.COLORS.GRAY_200,
 
     flex: 1,
     textAlign: "center",
-    marginRight: 24,
+    paddingHorizontal: 16
   }
 });

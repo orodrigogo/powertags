@@ -12,5 +12,7 @@ export const styles = StyleSheet.create({
 
     backgroundColor: THEME.COLORS.GRAY_500,
     color: THEME.COLORS.GRAY_200,
+    fontFamily: THEME.FONTS.FAMILY.PRIMARY.REGULAR,
+    fontSize: THEME.FONTS.SIZE.MD,
   }
 });

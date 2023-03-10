@@ -3,6 +3,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import { styles } from "./styles";
 import { THEME } from "../../theme";
+import { ButtonIcon } from "../ButtonIcon";
 
 type Props = {
   title: string;
@@ -19,9 +20,16 @@ export function Header({ title }: Props) {
         />
       </TouchableOpacity>
 
-      <Text style={styles.title}>
+      <Text
+        style={styles.title}
+        numberOfLines={2}
+      >
         {title}
       </Text>
+
+      <ButtonIcon
+        iconName="edit"
+      />
     </View>
   );
 }

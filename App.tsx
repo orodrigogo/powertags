@@ -1,7 +1,7 @@
 import { StatusBar } from "react-native";
 import { useFonts, NotoSans_400Regular, NotoSans_700Bold, NotoSans_800ExtraBold } from "@expo-google-fonts/noto-sans";
 
-import { Tags } from "./src/screens/Tags";
+import { Details } from "./src/screens/Details";
 import { Loading } from "./src/components/Loading";
 
 export default function App() {
@@ -25,7 +25,7 @@ export default function App() {
         translucent
       />
 
-      <Tags />
+      <Details />
     </>
   );
 }
