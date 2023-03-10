@@ -7,8 +7,11 @@ import { Button } from "../../components/Button";
 import { TextArea } from "../../components/TextArea";
 
 import { styles } from "./styles";
+import { useState } from "react";
 
 export function Details() {
+  const [description, setDescription] = useState('');
+
   return (
     <SafeAreaView style={styles.container}>
       <Header title="React Native" />
@@ -16,6 +19,9 @@ export function Details() {
       <View style={styles.content}>
         <TextArea
           placeholder="Sobre qual assunto você deseja gerar tags?"
+          onChangeText={setDescription}
+          value={description}
+          onClear={() => setDescription('')}
         />
 
         <Button title="Gerar novas tags" />
