@@ -1,8 +1,8 @@
-import { Text, TouchableOpacity, View } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Text, TouchableOpacity, View } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
-import { styles } from './styles';
-import { THEME } from '../../theme';
+import { styles } from "./styles";
+import { THEME } from "../../theme";
 
 type Props = {
   title: string;

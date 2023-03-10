@@ -1,14 +1,14 @@
-import { StyleSheet } from 'react-native';
-import { THEME } from '../../theme';
+import { StyleSheet } from "react-native";
+import { THEME } from "../../theme";
 
 export const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: "100%",
     height: 120,
     padding: 32,
 
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
 
     backgroundColor: THEME.COLORS.GRAY_500
   },
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     color: THEME.COLORS.GRAY_200,
 
     flex: 1,
-    textAlign: 'center',
+    textAlign: "center",
     marginRight: 24,
   }
 });
