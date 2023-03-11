@@ -12,5 +12,8 @@ export const styles = StyleSheet.create({
     gap: 16,
 
     backgroundColor: THEME.COLORS.GRAY_600,
+  },
+  form: {
+
   }
 });

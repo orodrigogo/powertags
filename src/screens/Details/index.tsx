@@ -3,6 +3,7 @@ import { Alert, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Tags } from "../../components/Tags";
+import { Modal } from "../../components/Modal";
 import { Header } from "../../components/Header";
 import { Button } from "../../components/Button";
 import { TextArea } from "../../components/TextArea";
@@ -58,7 +59,10 @@ export function Details() {
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Tags">
-        <PopupMenu />
+        <PopupMenu options={[
+          { title: 'Editar', iconName: 'edit', action: () => Alert.alert('Editar 1') }
+        ]}
+        />
       </Header>
 
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -84,6 +88,12 @@ export function Details() {
           setTags={setTags}
         />
       </ScrollView>
+
+      <Modal visible={true} onClose={() => { }}>
+        <View style={styles.form}>
+
+        </View>
+      </Modal>
     </SafeAreaView >
   );
 }

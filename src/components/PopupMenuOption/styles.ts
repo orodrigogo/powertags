@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 12
+    paddingVertical: 12,
   },
   title: {
     flex: 1,
@@ -13,5 +13,9 @@ export const styles = StyleSheet.create({
     fontFamily: THEME.FONTS.FAMILY.PRIMARY.REGULAR,
     fontSize: THEME.FONTS.SIZE.SM,
     marginLeft: 7
+  },
+  divisor: {
+    borderBottomWidth: 1,
+    borderBottomColor: THEME.COLORS.GRAY_200
   }
 });
