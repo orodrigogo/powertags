@@ -3,8 +3,9 @@ import { THEME } from '../../theme';
 
 export const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: 64,
+    flex: 1,
+    miHeight: 64,
+    maxHeight: 64,
     borderRadius: 7,
 
     alignItems: 'center',

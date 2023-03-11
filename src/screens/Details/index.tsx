@@ -83,11 +83,18 @@ export function Details() {
             editable={!isLoading}
           />
 
-          <Button
-            title="Gerar tags"
-            onPress={handleFetchTags}
-            isLoading={isLoading}
-          />
+          <View style={styles.options}>
+            <Button
+              title="Gerar tags"
+              onPress={handleFetchTags}
+              isLoading={isLoading}
+            />
+
+            <ButtonIcon
+              iconName="mic"
+              size="secondary_size"
+            />
+          </View>
         </View>
 
         <Tags

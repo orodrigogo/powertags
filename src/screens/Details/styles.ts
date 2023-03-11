@@ -13,4 +13,8 @@ export const styles = StyleSheet.create({
 
     backgroundColor: THEME.COLORS.GRAY_600,
   },
+  options: {
+    flexDirection: 'row',
+    gap: 7
+  }
 });
