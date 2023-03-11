@@ -14,7 +14,8 @@ import { ButtonIcon } from "../../components/ButtonIcon";
 
 import { styles } from "./styles";
 
-const { CHAT_GPD_API_KEY } = process.env;
+const CHAT_GPD_API_KEY = process.env.CHAT_GPD_API_KEY;
+const GCP_SPEECH_TO_TEXT_KEY = process.env.GCP_SPEECH_TO_TEXT_KEY;
 
 const RECORDING_OPTIONS = {
   android: {
@@ -43,6 +44,7 @@ const RECORDING_OPTIONS = {
 export function Details() {
   const [tags, setTags] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isConvertingSpeechToText, setIsConvertingSpeechToText] = useState(false);
   const [description, setDescription] = useState('');
   const [collectionName, setCollectionName] = useState('Tags');
   const [isModalFormVisible, setIsModalFormVisible] = useState(false);
@@ -113,38 +115,43 @@ export function Details() {
 
       await recording?.stopAndUnloadAsync();
       const recordingFileUri = recording?.getURI();
-      console.log(recordingFileUri);
 
-      setRecording(null);
+      if (recordingFileUri) {
+        const base64File = await FileSystem.readAsStringAsync(recordingFileUri, { encoding: FileSystem?.EncodingType?.Base64 });
+        await FileSystem.deleteAsync(recordingFileUri);
 
+        setRecording(null);
+        getTranscription(base64File);
+      } else {
+        Alert.alert("Audio", "Não foi possível obter a gravação.");
+      }
     } catch (error) {
       console.log(error);
     }
   }
 
-  async function getTranscription(recordingURI: string) {
-    try {
+  function getTranscription(base64File: string) {
+    setIsConvertingSpeechToText(true);
 
-      const formData = new FormData();
-      formData.append('file', {
-        uri: recordingURI,
-        type: 'audio/x-wav',
-        // could be anything 
-        name: 'speech2text'
-      });
-
-      const response = await fetch(config.CLOUD_FUNCTION_URL, {
-        method: 'POST',
-        body: formData
-      });
-
-      const data = await response.json();
-      console.log(data.transcript);
-
-      await FileSystem.deleteAsync(recordingURI);
-    } catch (error) {
-      console.log(error);
-    }
+    fetch(`https://speech.googleapis.com/v1/speech:recognize?key=${GCP_SPEECH_TO_TEXT_KEY}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        config: {
+          languageCode: "pt-BR",
+          encoding: "LINEAR16",
+          sampleRateHertz: 41000,
+        },
+        audio: {
+          content: base64File
+        }
+      })
+    })
+      .then(response => response.json())
+      .then((data) => {
+        setDescription(data.results[0].alternatives[0].transcript);
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setIsConvertingSpeechToText(false))
   }
 
   useEffect(() => {
@@ -180,7 +187,6 @@ export function Details() {
             onChangeText={setDescription}
             value={description}
             onClear={() => setDescription("")}
-            autoFocus={true}
             editable={!isLoading}
           />
 
@@ -192,10 +198,11 @@ export function Details() {
             />
 
             <ButtonIcon
-              iconName={recording ? "record-voice-over" : "mic"}
+              iconName="mic"
               size="secondary_size"
               onPressIn={handleRecordingStart}
               onPressOut={handleRecordingStop}
+              isLoading={isConvertingSpeechToText}
             />
           </View>
         </View>

@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Pressable, PressableProps } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { ActivityIndicator, Pressable, PressableProps } from 'react-native';
 
 import { THEME } from '../../theme';
 import { styles } from './styles';
 
 type Props = PressableProps & {
+  isLoading?: boolean;
   size?: 'primary_size' | 'secondary_size';
   iconName: keyof typeof MaterialIcons.glyphMap;
   onPressIn?: () => void;
@@ -13,8 +14,9 @@ type Props = PressableProps & {
 }
 
 export function ButtonIcon({
-  size = "primary_size",
   iconName,
+  size = "primary_size",
+  isLoading = false,
   onPressIn = () => { },
   onPressOut = () => { },
   ...rest
@@ -40,13 +42,23 @@ export function ButtonIcon({
       ]}
       onPressIn={handleOnPressIn}
       onPressOut={handleOnPressOut}
+      disabled={isLoading}
       {...rest}
     >
-      <MaterialIcons
-        name={iconName}
-        size={size === 'primary_size' ? 24 : 32}
-        color={THEME.COLORS.GRAY_300}
-      />
+      {
+        isLoading
+          ?
+          <ActivityIndicator
+            color={THEME.COLORS.GRAY_200}
+            size="small"
+          />
+          :
+          <MaterialIcons
+            name={iconName}
+            size={size === 'primary_size' ? 24 : 32}
+            color={THEME.COLORS.GRAY_300}
+          />
+      }
     </Pressable>
   );
 }
