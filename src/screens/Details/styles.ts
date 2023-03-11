@@ -13,7 +13,4 @@ export const styles = StyleSheet.create({
 
     backgroundColor: THEME.COLORS.GRAY_600,
   },
-  form: {
-
-  }
 });

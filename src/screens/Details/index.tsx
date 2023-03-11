@@ -3,11 +3,12 @@ import { Alert, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Tags } from "../../components/Tags";
+import { Input } from "../../components/Input";
 import { Modal } from "../../components/Modal";
 import { Header } from "../../components/Header";
 import { Button } from "../../components/Button";
 import { TextArea } from "../../components/TextArea";
-import { PopupMenu } from "../../components/PopupMenu";
+import { ButtonIcon } from "../../components/ButtonIcon";
 
 import { styles } from "./styles";
 
@@ -17,6 +18,8 @@ export function Details() {
   const [tags, setTags] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState('');
+  const [collectionName, setCollectionName] = useState('Tags');
+  const [isModalFormVisible, setIsModalFormVisible] = useState(false);
 
   function handleFetchTags() {
     setIsLoading(true);
@@ -56,12 +59,16 @@ export function Details() {
     setTags(tagsFormatted);
   }
 
+  function handleNameCollectionEdit() {
+    setIsModalFormVisible(false);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Tags">
-        <PopupMenu options={[
-          { title: 'Editar', iconName: 'edit', action: () => Alert.alert('Editar 1') }
-        ]}
+      <Header title={collectionName}>
+        <ButtonIcon
+          iconName="edit"
+          onPress={() => setIsModalFormVisible(true)}
         />
       </Header>
 
@@ -89,10 +96,23 @@ export function Details() {
         />
       </ScrollView>
 
-      <Modal visible={true} onClose={() => { }}>
-        <View style={styles.form}>
+      <Modal
+        visible={isModalFormVisible}
+        onClose={() => setIsModalFormVisible(false)}
+        title="Editar nome"
+      >
+        <>
+          <Input
+            placeholder="Nome da coleção"
+            onChangeText={setCollectionName}
+            value={collectionName}
+          />
 
-        </View>
+          <Button
+            title="Salvar"
+            onPress={handleNameCollectionEdit}
+          />
+        </>
       </Modal>
     </SafeAreaView >
   );
