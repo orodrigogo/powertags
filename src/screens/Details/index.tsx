@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from 'expo-av';
+import * as FileSystem from 'expo-file-system';
 
 import { Tags } from "../../components/Tags";
 import { Input } from "../../components/Input";
@@ -14,12 +16,38 @@ import { styles } from "./styles";
 
 const { CHAT_GPD_API_KEY } = process.env;
 
+const RECORDING_OPTIONS = {
+  android: {
+    extension: '.m4a',
+    outputFormat: Audio.AndroidOutputFormat.MPEG_4,
+    audioEncoder: Audio.AndroidAudioEncoder.AAC,
+    sampleRate: 44100,
+    numberOfChannels: 2,
+    bitRate: 128000,
+  },
+  ios: {
+    extension: '.wav',
+    audioQuality: Audio.IOSAudioQuality.HIGH,
+    sampleRate: 44100,
+    numberOfChannels: 1,
+    bitRate: 128000,
+    linearPCMBitDepth: 16,
+    linearPCMIsBigEndian: false,
+    linearPCMIsFloat: false,
+  },
+  web: {
+
+  }
+};
+
 export function Details() {
   const [tags, setTags] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState('');
   const [collectionName, setCollectionName] = useState('Tags');
   const [isModalFormVisible, setIsModalFormVisible] = useState(false);
+
+  const [recording, setRecording] = useState<Audio.Recording | null>(null);
 
   function handleFetchTags() {
     setIsLoading(true);
@@ -63,6 +91,79 @@ export function Details() {
     setIsModalFormVisible(false);
   }
 
+  async function handleRecordingStart() {
+    const { granted } = await Audio.getPermissionsAsync();
+
+    if (granted) {
+      try {
+        console.log('Starting recording..');
+
+        const { recording } = await Audio.Recording.createAsync(RECORDING_OPTIONS);
+        setRecording(recording);
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  async function handleRecordingStop() {
+    try {
+      console.log('Stopping recording..');
+
+      await recording?.stopAndUnloadAsync();
+      const recordingFileUri = recording?.getURI();
+      console.log(recordingFileUri);
+
+      setRecording(null);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getTranscription(recordingURI: string) {
+    try {
+
+      const formData = new FormData();
+      formData.append('file', {
+        uri: recordingURI,
+        type: 'audio/x-wav',
+        // could be anything 
+        name: 'speech2text'
+      });
+
+      const response = await fetch(config.CLOUD_FUNCTION_URL, {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+      console.log(data.transcript);
+
+      await FileSystem.deleteAsync(recordingURI);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    Audio
+      .requestPermissionsAsync()
+      .then((granted) => {
+        if (granted) {
+          Audio.setAudioModeAsync({
+            allowsRecordingIOS: true,
+            interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+            playsInSilentModeIOS: true,
+            shouldDuckAndroid: true,
+            interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+            playThroughEarpieceAndroid: true,
+          });
+        }
+      });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <Header title={collectionName}>
@@ -91,8 +192,10 @@ export function Details() {
             />
 
             <ButtonIcon
-              iconName="mic"
+              iconName={recording ? "record-voice-over" : "mic"}
               size="secondary_size"
+              onPressIn={handleRecordingStart}
+              onPressOut={handleRecordingStop}
             />
           </View>
         </View>

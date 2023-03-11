@@ -7,8 +7,6 @@ export const styles = StyleSheet.create({
 
     justifyContent: 'center',
     alignItems: 'center',
-
-    backgroundColor: THEME.COLORS.GRAY_400
   },
   primary_size: {
     height: 42,
@@ -17,5 +15,11 @@ export const styles = StyleSheet.create({
   secondary_size: {
     height: 64,
     width: 64,
+  },
+  active: {
+    backgroundColor: THEME.COLORS.PRIMARY
+  },
+  inative: {
+    backgroundColor: THEME.COLORS.GRAY_400
   }
 });

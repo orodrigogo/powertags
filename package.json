@@ -17,7 +17,9 @@
     "react-native": "0.71.3",
     "react-native-reanimated": "~2.14.4",
     "react-native-safe-area-context": "4.5.0",
-    "expo-blur": "~12.2.2"
+    "expo-blur": "~12.2.2",
+    "expo-av": "~13.2.1",
+    "expo-file-system": "~15.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
