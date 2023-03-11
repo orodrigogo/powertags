@@ -2,16 +2,15 @@ import { StyleSheet } from 'react-native';
 import { THEME } from '../../theme';
 
 export const styles = StyleSheet.create({
-  container: {
-  },
   popup: {
     minWidth: 150,
     borderRadius: 7,
     backgroundColor: 'white',
     padding: 12,
+
     position: 'absolute',
     top: 140,
-    right: 35
+    right: 32,
   },
   title: {
     color: THEME.COLORS.PRIMARY,
