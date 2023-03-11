@@ -9,9 +9,9 @@ type Props = TouchableOpacityProps & {
   iconName: keyof typeof MaterialIcons.glyphMap;
 }
 
-export function PopupMenuOption({ title, iconName }: Props) {
+export function PopupMenuOption({ title, iconName, ...rest }: Props) {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} {...rest}>
       <MaterialIcons
         name={iconName}
         size={20}

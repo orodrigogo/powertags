@@ -1,6 +1,9 @@
 import { useState } from 'react';
+import { BlurView } from 'expo-blur';
 import { View, Modal, Text } from 'react-native';
-import { SafeAreaView } from "react-native-safe-area-context";
+import Animated, { FadeIn } from 'react-native-reanimated';
+
+const BlurViewAnimated = Animated.createAnimatedComponent(BlurView);
 
 import { ButtonIcon } from "../ButtonIcon";
 import { PopupMenuOption } from '../PopupMenuOption';
@@ -21,9 +24,11 @@ export function PopupMenu() {
         transparent
         visible={visible}
       >
-        <SafeAreaView
-          style={{ flex: 1 }}
-          onTouchStart={() => setVisible(false)}
+        <BlurViewAnimated
+          style={styles.overlay}
+          intensity={4}
+          onTouchEnd={() => setVisible(false)}
+          entering={FadeIn}
         >
           <View style={styles.popup}>
             <Text style={styles.title}>
@@ -33,9 +38,10 @@ export function PopupMenu() {
             <PopupMenuOption
               title="Renomear"
               iconName="edit"
+              onPress={() => console.log('teste')}
             />
           </View>
-        </SafeAreaView>
+        </BlurViewAnimated>
       </Modal>
     </>
   );

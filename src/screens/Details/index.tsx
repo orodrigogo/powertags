@@ -6,6 +6,7 @@ import { Tags } from "../../components/Tags";
 import { Header } from "../../components/Header";
 import { Button } from "../../components/Button";
 import { TextArea } from "../../components/TextArea";
+import { PopupMenu } from "../../components/PopupMenu";
 
 import { styles } from "./styles";
 
@@ -56,7 +57,9 @@ export function Details() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Tags" />
+      <Header title="Tags">
+        <PopupMenu />
+      </Header>
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
@@ -81,6 +84,6 @@ export function Details() {
           setTags={setTags}
         />
       </ScrollView>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 }

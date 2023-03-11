@@ -8,6 +8,8 @@ export const THEME = {
     GRAY_400: "#313135",
     GRAY_300: "#A0A0A7",
     GRAY_200: "#D5D4D9",
+
+    OVERLAY: "rgba(0, 0, 0, 0.5)",
   },
 
   FONTS: {

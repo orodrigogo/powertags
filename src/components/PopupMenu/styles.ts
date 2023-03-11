@@ -2,6 +2,10 @@ import { StyleSheet } from 'react-native';
 import { THEME } from '../../theme';
 
 export const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: THEME.COLORS.OVERLAY,
+  },
   popup: {
     minWidth: 150,
     borderRadius: 7,

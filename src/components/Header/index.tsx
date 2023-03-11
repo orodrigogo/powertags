@@ -1,16 +1,16 @@
+import { ReactNode } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-
-import { PopupMenu } from "../PopupMenu";
 
 import { styles } from "./styles";
 import { THEME } from "../../theme";
 
 type Props = {
   title: string;
+  children: ReactNode;
 }
 
-export function Header({ title }: Props) {
+export function Header({ title, children }: Props) {
   return (
     <View style={styles.container}>
       <TouchableOpacity activeOpacity={0.7}>
@@ -28,7 +28,7 @@ export function Header({ title }: Props) {
         {title}
       </Text>
 
-      <PopupMenu />
+      {children}
     </View>
   );
 }
