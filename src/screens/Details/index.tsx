@@ -13,6 +13,7 @@ import { TextArea } from "../../components/TextArea";
 import { ButtonIcon } from "../../components/ButtonIcon";
 
 import { styles } from "./styles";
+import { Toast } from "../../components/Toast";
 
 const CHAT_GPD_API_KEY = process.env.CHAT_GPD_API_KEY;
 const GCP_SPEECH_TO_TEXT_KEY = process.env.GCP_SPEECH_TO_TEXT_KEY;
@@ -48,6 +49,7 @@ export function Details() {
   const [description, setDescription] = useState('');
   const [collectionName, setCollectionName] = useState('Tags');
   const [isModalFormVisible, setIsModalFormVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
 
@@ -98,7 +100,7 @@ export function Details() {
 
     if (granted) {
       try {
-        console.log('Starting recording..');
+        setToastMessage('Gravando...');
 
         const { recording } = await Audio.Recording.createAsync(RECORDING_OPTIONS);
         setRecording(recording);
@@ -111,7 +113,7 @@ export function Details() {
 
   async function handleRecordingStop() {
     try {
-      console.log('Stopping recording..');
+      setToastMessage(null);
 
       await recording?.stopAndUnloadAsync();
       const recordingFileUri = recording?.getURI();
@@ -173,6 +175,8 @@ export function Details() {
 
   return (
     <SafeAreaView style={styles.container}>
+      {toastMessage && <Toast message={toastMessage} />}
+
       <Header title={collectionName}>
         <ButtonIcon
           iconName="edit"
