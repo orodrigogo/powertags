@@ -1,5 +1,5 @@
-import { Text, View } from 'react-native';
-import Animated, { FadeInDown, SlideInDown, SlideInUp, SlideOutUp } from 'react-native-reanimated';
+import { Text } from 'react-native';
+import Animated, { SlideInUp, SlideOutUp } from 'react-native-reanimated';
 
 import { styles } from './styles';
 
