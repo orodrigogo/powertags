@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Alert, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from 'expo-av';
-import * as FileSystem from 'expo-file-system';
+import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from "expo-av";
+import * as FileSystem from "expo-file-system";
 
 import { Tags } from "../../components/Tags";
 import { Input } from "../../components/Input";
@@ -20,15 +20,15 @@ const GCP_SPEECH_TO_TEXT_KEY = process.env.GCP_SPEECH_TO_TEXT_KEY;
 
 const RECORDING_OPTIONS = {
   android: {
-    extension: '.m4a',
-    outputFormat: Audio.AndroidOutputFormat.MPEG_4,
-    audioEncoder: Audio.AndroidAudioEncoder.AAC,
-    sampleRate: 44100,
+    extension: ".m4a",
+    outputFormat: Audio.AndroidOutputFormat.AMR_WB,
+    audioEncoder: Audio.AndroidAudioEncoder.AMR_WB,
+    sampleRate: 16000,
     numberOfChannels: 2,
     bitRate: 128000,
   },
   ios: {
-    extension: '.wav',
+    extension: ".wav",
     audioQuality: Audio.IOSAudioQuality.HIGH,
     sampleRate: 44100,
     numberOfChannels: 1,
@@ -37,17 +37,16 @@ const RECORDING_OPTIONS = {
     linearPCMIsBigEndian: false,
     linearPCMIsFloat: false,
   },
-  web: {
-
-  }
+  web: {},
 };
 
 export function Details() {
   const [tags, setTags] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isConvertingSpeechToText, setIsConvertingSpeechToText] = useState(false);
-  const [description, setDescription] = useState('');
-  const [collectionName, setCollectionName] = useState('Tags');
+  const [isConvertingSpeechToText, setIsConvertingSpeechToText] =
+    useState(false);
+  const [description, setDescription] = useState("");
+  const [collectionName, setCollectionName] = useState("Tags");
   const [isModalFormVisible, setIsModalFormVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -56,36 +55,39 @@ export function Details() {
   function handleFetchTags() {
     setIsLoading(true);
     const prompt = `
-      Generate keywords in Portuguese for a post about ${description.trim()}.       
+      Generate keywords in Portuguese for a post about ${description.trim()}.
       Replace the spaces in each word with the character "_".
       Return each item separated by a comma, in lowercase, and without a line break.
     `;
 
-    fetch("https://api.openai.com/v1/engines/text-davinci-003-playground/completions", {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${CHAT_GPD_API_KEY}`
-      },
-      body: JSON.stringify({
-        prompt,
-        temperature: 0.22,
-        max_tokens: 500,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-      }),
-    })
-      .then(response => response.json())
+    fetch(
+      "https://api.openai.com/v1/engines/text-davinci-003-playground/completions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${CHAT_GPD_API_KEY}`,
+        },
+        body: JSON.stringify({
+          prompt,
+          temperature: 0.22,
+          max_tokens: 500,
+          top_p: 1,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+        }),
+      }
+    )
+      .then((response) => response.json())
       .then((data) => saveTags(data.choices[0].text))
-      .catch(() => Alert.alert('Erro', 'Não foi possível buscar as tags.'))
+      .catch(() => Alert.alert("Erro", "Não foi possível buscar as tags."))
       .finally(() => setIsLoading(false));
   }
 
   function saveTags(data: string) {
     const tagsFormatted = data
       .trim()
-      .split(',')
+      .split(",")
       .map((tag) => `#${tag}`);
 
     setTags(tagsFormatted);
@@ -100,11 +102,12 @@ export function Details() {
 
     if (granted) {
       try {
-        setToastMessage('Gravando...');
+        setToastMessage("Gravando...");
 
-        const { recording } = await Audio.Recording.createAsync(RECORDING_OPTIONS);
+        const { recording } = await Audio.Recording.createAsync(
+          RECORDING_OPTIONS
+        );
         setRecording(recording);
-
       } catch (error) {
         console.log(error);
       }
@@ -119,7 +122,10 @@ export function Details() {
       const recordingFileUri = recording?.getURI();
 
       if (recordingFileUri) {
-        const base64File = await FileSystem.readAsStringAsync(recordingFileUri, { encoding: FileSystem?.EncodingType?.Base64 });
+        const base64File = await FileSystem.readAsStringAsync(
+          recordingFileUri,
+          { encoding: FileSystem?.EncodingType?.Base64 }
+        );
         await FileSystem.deleteAsync(recordingFileUri);
 
         setRecording(null);
@@ -135,42 +141,43 @@ export function Details() {
   function getTranscription(base64File: string) {
     setIsConvertingSpeechToText(true);
 
-    fetch(`https://speech.googleapis.com/v1/speech:recognize?key=${GCP_SPEECH_TO_TEXT_KEY}`, {
-      method: 'POST',
-      body: JSON.stringify({
-        config: {
-          languageCode: "pt-BR",
-          encoding: "LINEAR16",
-          sampleRateHertz: 41000,
-        },
-        audio: {
-          content: base64File
-        }
-      })
-    })
-      .then(response => response.json())
+    fetch(
+      `https://speech.googleapis.com/v1/speech:recognize?key=${GCP_SPEECH_TO_TEXT_KEY}`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          config: {
+            languageCode: "pt-BR",
+            encoding: "LINEAR16", // On Android use "AMR_WB"
+            sampleRateHertz: 41000, // On Android use 16000
+          },
+          audio: {
+            content: base64File,
+          },
+        }),
+      }
+    )
+      .then((response) => response.json())
       .then((data) => {
         setDescription(data.results[0].alternatives[0].transcript);
       })
       .catch((error) => console.log(error))
-      .finally(() => setIsConvertingSpeechToText(false))
+      .finally(() => setIsConvertingSpeechToText(false));
   }
 
   useEffect(() => {
-    Audio
-      .requestPermissionsAsync()
-      .then((granted) => {
-        if (granted) {
-          Audio.setAudioModeAsync({
-            allowsRecordingIOS: true,
-            interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-            playsInSilentModeIOS: true,
-            shouldDuckAndroid: true,
-            interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
-            playThroughEarpieceAndroid: true,
-          });
-        }
-      });
+    Audio.requestPermissionsAsync().then((granted) => {
+      if (granted) {
+        Audio.setAudioModeAsync({
+          allowsRecordingIOS: true,
+          interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+          playsInSilentModeIOS: true,
+          shouldDuckAndroid: true,
+          interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+          playThroughEarpieceAndroid: true,
+        });
+      }
+    });
   }, []);
 
   return (
@@ -211,10 +218,7 @@ export function Details() {
           </View>
         </View>
 
-        <Tags
-          tags={tags}
-          setTags={setTags}
-        />
+        <Tags tags={tags} setTags={setTags} />
       </ScrollView>
 
       <Modal
@@ -229,12 +233,9 @@ export function Details() {
             value={collectionName}
           />
 
-          <Button
-            title="Salvar"
-            onPress={handleNameCollectionEdit}
-          />
+          <Button title="Salvar" onPress={handleNameCollectionEdit} />
         </>
       </Modal>
-    </SafeAreaView >
+    </SafeAreaView>
   );
 }
